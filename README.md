@@ -11,7 +11,7 @@ Here we connect to multiple databases using below steps:
 4. In @EnableJpaRepositories set these properties (entityManagerFactoryRef = "entityManagerFactory", basePackages = {
 		"com.multidb.user.repository" }, transactionManagerRef = "transactionManager").
     
-5. Create datasource bean for each datasource configuration. 
+5. Create datasource bean for each datasource. 
    @Primary
 	 @Bean(name = "dataSource")
 	 @ConfigurationProperties(prefix = "spring.user.datasource")
@@ -19,7 +19,7 @@ Here we connect to multiple databases using below steps:
 	 	 return DataSourceBuilder.create().build();
 	 }
 
-6. Create entityManagerFactory bean.
+6. Create entityManagerFactory bean for each datasource.
    @Bean(name = "entityManagerFactory")
 	 public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder,
 			@Qualifier("dataSource") DataSource dataSource) {
@@ -29,10 +29,9 @@ Here we connect to multiple databases using below steps:
 		return builder.dataSource(dataSource).properties(properties).packages("com.multidb.user.entity").persistenceUnit("User").build();
 	 }
 
-7. Create TransactionManager bean. 
+7. Create TransactionManager bean for each datasource. 
    @Bean(name = "transactionManager")
 	 public PlatformTransactionManager transactionManager(
 			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
-
 	  return new JpaTransactionManager(entityManagerFactory);
    }
