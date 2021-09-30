@@ -1,16 +1,16 @@
 package com.multidb.form;
 
-public class UserForm {
+public class RegisterationForm {
 
 	private String name;
 	private String email;
 	private String password;
 
-	public UserForm() {
+	public RegisterationForm() {
 
 	}
 
-	public UserForm(String name, String email, String password) {
+	public RegisterationForm(String name, String email, String password) {
 		super();
 		this.name = name;
 		this.email = email;

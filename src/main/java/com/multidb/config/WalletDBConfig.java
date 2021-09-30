@@ -21,31 +21,28 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages = {
-		"com.multidb.user.repository" }, transactionManagerRef = "transactionManager")
-public class UserDBConfig {
+@EnableJpaRepositories(entityManagerFactoryRef = "walletEntityManagerFactory", basePackages = {
+		"com.multidb.wallet.repository" }, transactionManagerRef = "walletTransactionManager")
+public class WalletDBConfig {
 
-	@Primary
-	@Bean(name = "dataSource")
-	@ConfigurationProperties(prefix = "spring.user.datasource")
+	@Bean(name = "walletDataSource")
+	@ConfigurationProperties(prefix = "spring.wallet.datasource")
 	public DataSource dataSource() {
 		return DataSourceBuilder.create().build();
 	}
 
-	@Primary
-	@Bean(name = "entityManagerFactory")
+	@Bean(name = "walletEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder,
-			@Qualifier("dataSource") DataSource dataSource) {
+			@Qualifier("walletDataSource") DataSource dataSource) {
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("hibernate.hbm2ddl.auto", "update");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		return builder.dataSource(dataSource).properties(properties).packages("com.multidb.user.entity").persistenceUnit("User").build();
+		return builder.dataSource(dataSource).properties(properties).packages("com.multidb.wallet.entity").persistenceUnit("Wallet").build();
 	}
 
-	@Primary
-	@Bean(name = "transactionManager")
+	@Bean(name = "walletTransactionManager")
 	public PlatformTransactionManager transactionManager(
-			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+			@Qualifier("walletEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
 
 		return new JpaTransactionManager(entityManagerFactory);
 	}

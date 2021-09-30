@@ -1,4 +1,4 @@
-package com.multidb.order.entity;
+package com.multidb.wallet.entity;
 
 import java.math.BigDecimal;
 
@@ -11,18 +11,20 @@ import javax.persistence.Id;
 public class Wallet {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private BigDecimal amount;
-	private String Type;
+	private String type;
+	private Integer userId;
 
 	public Wallet() {
 	}
 
-	public Wallet(BigDecimal amount, String type) {
+	public Wallet(BigDecimal amount, String type, Integer userId) {
 		super();
 		this.amount = amount;
-		Type = type;
+		this.type = type;
+		this.userId = userId;
 	}
 
 	public Integer getId() {
@@ -42,11 +44,19 @@ public class Wallet {
 	}
 
 	public String getType() {
-		return Type;
+		return type;
 	}
 
 	public void setType(String type) {
-		Type = type;
+		this.type = type;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }
